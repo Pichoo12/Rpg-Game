@@ -9,8 +9,8 @@ public class Main extends JFrame{
 		setSize(WIDTH, HEIGHT);
 		Game play = new Game();
 		((Component) play).setFocusable(true);
-		Color RoyalBlue = new Color(250,250,250);
-		setBackground(RoyalBlue);
+		Color Red= new Color(250,0,0);
+		setBackground(Red);
 		getContentPane().add(play);
 		setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

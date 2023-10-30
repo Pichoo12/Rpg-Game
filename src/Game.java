@@ -34,7 +34,7 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 	private ArrayList<Character> setStartChars() {
 		startList.add(new Archerqueen(200, new bfire(400,280, 5, 0), 130,320));
 		startList.add(new Icewizard(200, new Boom(380,350, 5, 0), 510,270));
-		startList.add(new Wizard(200,new Sword(4000,500), 750,260));
+		startList.add(new Wizard(200,new Sword(4000,500), 830,260));
 		startList.add(new Archer(200, new Bow(440,350, 5, 0), 1200,240));
 		return startList;
 	}
@@ -57,8 +57,8 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 		selectString = "Select Your Character";
 		text = 1;
 		time = 0;
-		background = "C:\\Users\\S1802049\\OneDrive - Houston Independent School District\\Comsci\\Rpg Game (2)\\Rpg Game\\src\\background.jpg";
-		selectcharacterbackground = "\\Users\\S1802049\\OneDrive - Houston Independent School District\\Comsci\\Rpg Game (2)\\Rpg Game\\src\\selectcharback.jpg";
+		background = "src\\characterback.gif";
+		selectcharacterbackground = "src\\Pics\\selectcharback.jpg";
 		characterbackground = "src\\Pics\\background.jpg";
 		img = new ImageIcon(characterbackground);
 		img1 = new ImageIcon (background);
@@ -97,7 +97,7 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 		g2d.clearRect(0,0,getSize().width, getSize().height);
 		g2d.setFont( new Font("Broadway", Font.BOLD, 50));
 		switch (screen) {
-		case START:
+			case START:
 			drawStartScreen(g2d);
 			break;
 		case WIZARD:
@@ -124,7 +124,8 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 			player.drawChar(g2d);	
 			break;
 		case GAMESCREEN:
-			g2d.drawImage(img1.getImage(),bx,by,getSize().width+3000, getSize().height+3000, null);
+		g2d.drawImage(img.getImage(), bx, by, getSize().width + 3000, getSize().height + 3000, null);
+
 			player.drawChar(g2d);
 			//System.out.println(ranged.size());
 
@@ -145,7 +146,7 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 			break;
 		}
 		drawScreen(g2d);
-		if(player!=null)
+		//if(player!=null)
 			//System.out.println(player.getAb());
 			time++;
 		twoDgraph.drawImage (back, null, 0, 0);
@@ -159,19 +160,26 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 		typeTime = typeTime / typeSpeed;
 		int typeIndex = time/typeTime - ((time%typeTime)/typeTime);
 		g2d.setColor(Color.black);
+		System.out.println(typeIndex + " " + selectString.length());
+
+
+
 		if (typeIndex<= selectString.length() && typeIndex !=0) {
+		g2d.setColor(Color.white);
+		 g2d.drawImage(img1.getImage(), 0,0,getSize().width, getSize().height, null);
 			g2d.drawString(selectString.substring(0,typeIndex),500,200);
+			System.out.println(selectString.substring(0,typeIndex));
 		}
 		else {
 			text++;
 			g2d.drawImage(img.getImage(), 0,0,getSize().width, getSize().height, null);
-			selectString="";
+			//selectString="";
 			for(Character sL : startList) {
 				sL.drawChar(g2d);
 			}	
-			g2d.drawString(selectString,500,200);
+			//g2d.drawString(selectString,500,200);
 			g2d.drawString("drag",550,600);
-			g2d.drawString("drag",170,600);
+			g2d.drawString("bdrag",170,600);
 			g2d.drawString("wizard",850,600);
 			g2d.drawString("archer",1270,600);
 		}
@@ -180,19 +188,22 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 	@Override
 	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
+	
 	}
 	//DO NOT DELETE
 	@Override
 	public void keyPressed(KeyEvent e) {
+		
+		if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+			bx -= 5;
+		} else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+			bx += 5;
+		} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+			by -= 5;
+		} else if (e.getKeyCode() == KeyEvent.VK_UP) {
+			by += 5;
+		}
 
-		if(e.getKeyCode()==39);
-		bx += 5;
-		if(e.getKeyCode()==37);
-		bx -= 5;
-		if(e.getKeyCode()==40);
-		by -= 5;
-		if(e.getKeyCode()==38);
-		bx += 5;
 		switch (e.getKeyCode()){
 		case 49:
 			//1
@@ -219,7 +230,8 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 				screen = screen.GAMESCREEN;	
 				player.setX(200);
 				player.setY(200);
-
+				
+	
 			}	
 
 			//player.getWeapon(g2d).drawWeapon();
@@ -269,6 +281,7 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 		}
 		else if (player instanceof Icewizard) {
 			ranged.add(new Boom(player.getAb().getX(), player.getAb().getY(),player.getAb().getDx(),player.getAb().getDy()));
+			ranged.add(new Boom(player.getAb().getX(), player.getAb().getY()+20,player.getAb().getDx(),player.getAb().getDy()));
 			System.out.println(ranged.get(ranged.size()-1).getX());
 		}
 

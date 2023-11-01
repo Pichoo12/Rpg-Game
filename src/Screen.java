@@ -7,6 +7,7 @@ public enum Screen {
 	GAMESCREEN(5);
 	
 	public final int index;
+    public Object get;
 	
 	private Screen(int index) {
 		this.index = index;

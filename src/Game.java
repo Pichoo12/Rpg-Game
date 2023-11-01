@@ -9,8 +9,13 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.LinkedList;
+import java.util.Queue;
+
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
+import javax.xml.stream.events.Characters;
 public class Game extends JPanel implements Runnable, KeyListener, MouseListener,MouseMotionListener{
 	private BufferedImage back;
 	private int key, x, y,w,h;
@@ -18,7 +23,7 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 	private Character Icewizard;
 	private Character Archer;
 	private Character Wizard;
-	//private String screen,
+	//private String screens;
 	private String selectString;
 	private Screen screen;
 	private int text;
@@ -29,22 +34,38 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 	private String background;
 	private String selectcharacterbackground;
 	private ImageIcon img , img1, img2;
+	
+	private Queue <Enemy> enemies;
+	
+
 	ArrayList<Abilities>ranged = new ArrayList<Abilities>();
+	
 	ArrayList<Character> startList = new ArrayList<Character>();
 	private ArrayList<Character> setStartChars() {
 		startList.add(new Archerqueen(200, new bfire(400,280, 5, 0), 130,320));
 		startList.add(new Icewizard(200, new Boom(380,350, 5, 0), 510,270));
 		startList.add(new Wizard(200,new Sword(4000,500), 830,260));
 		startList.add(new Archer(200, new Bow(440,350, 5, 0), 1200,240));
+		enemies.add(new Sparky (200, new Bow(440,350, 5, 0), 1200,240));
+		enemies.add(new Sparky (200, new Bow(440,350, 5, 0), 1200,240));
+		enemies.add(new Sparky (200, new Bow(440,350, 5, 0), 1200,240));
 		return startList;
+
+	
 	}
+
+
+
+
+
+
 	//private ArrayList <Character>startList;
 	public Game() {
 		new Thread(this).start();
 		this.addKeyListener(this);
 		this.addMouseListener(this);
 		this.addMouseMotionListener(this);
-		setStartChars();
+		
 		screen = Screen.START;
 		key =-1;
 		x=0;
@@ -53,6 +74,7 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 		h=0;
 		bx = 0;
 		by = 0;
+		
 		//	screen="start";
 		selectString = "Select Your Character";
 		text = 1;
@@ -63,7 +85,24 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 		img = new ImageIcon(characterbackground);
 		img1 = new ImageIcon (background);
 		img2 = new ImageIcon (selectcharacterbackground);
+
+         enemies= new LinkedList<Enemy>();
+setES();
+setStartChars();
+
 	}
+
+
+	private Queue<Enemy> setES() {
+		Queue <Enemy> temp = new LinkedList <> ();
+		enemies.add(new Giant());
+		enemies.add(new Sparky());
+		enemies.add(new Valk());
+		return temp;
+	}
+
+
+
 	public void run()
 	{
 		try
@@ -124,6 +163,7 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 			player.drawChar(g2d);	
 			break;
 		case GAMESCREEN:
+		System.out.println(enemies.element());
 		g2d.drawImage(img.getImage(), bx, by, getSize().width + 3000, getSize().height + 3000, null);
 
 			player.drawChar(g2d);
@@ -193,7 +233,10 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 	//DO NOT DELETE
 	@Override
 	public void keyPressed(KeyEvent e) {
-		
+	if (e.getKeyCode() == KeyEvent.VK_L) {
+			this.screen = screen.GAMESCREEN;
+	}		
+			
 		if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 			bx -= 5;
 		} else if (e.getKeyCode() == KeyEvent.VK_LEFT) {

@@ -10,12 +10,10 @@ import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.LinkedList;
 import java.util.Queue;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
-import javax.xml.stream.events.Characters;
 public class Game extends JPanel implements Runnable, KeyListener, MouseListener,MouseMotionListener{
 	private BufferedImage back;
 	private int key, x, y,w,h;
@@ -46,13 +44,11 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 		startList.add(new Icewizard(200, new Boom(380,350, 5, 0), 510,270));
 		startList.add(new Wizard(200,new Sword(4000,500), 830,260));
 		startList.add(new Archer(200, new Bow(440,350, 5, 0), 1200,240));
-		enemies.add(new Sparky (200, new Bow(440,350, 5, 0), 1200,240));
-		enemies.add(new Sparky (200, new Bow(440,350, 5, 0), 1200,240));
-		enemies.add(new Sparky (200, new Bow(440,350, 5, 0), 1200,240));
 		return startList;
 
 	
 	}
+
 
 
 
@@ -85,9 +81,8 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 		img = new ImageIcon(characterbackground);
 		img1 = new ImageIcon (background);
 		img2 = new ImageIcon (selectcharacterbackground);
-
-         enemies= new LinkedList<Enemy>();
-setES();
+		
+enemies=setES();
 setStartChars();
 
 	}
@@ -95,9 +90,9 @@ setStartChars();
 
 	private Queue<Enemy> setES() {
 		Queue <Enemy> temp = new LinkedList <> ();
-		enemies.add(new Giant());
-		enemies.add(new Sparky());
-		enemies.add(new Valk());
+		temp.add(new Giant (200, new Bow(440,350, 5, 0), 1200,240));
+		temp.add(new Sparky (200, new Bow(440,350, 5, 0), 1200,240));
+		temp.add(new Valk (200, new Bow(440,350, 5, 0), 1200,240));
 		return temp;
 	}
 
@@ -163,10 +158,12 @@ setStartChars();
 			player.drawChar(g2d);	
 			break;
 		case GAMESCREEN:
-		System.out.println(enemies.element());
+	
 		g2d.drawImage(img.getImage(), bx, by, getSize().width + 3000, getSize().height + 3000, null);
-
+	System.out.println(enemies.element());
+		enemies.element().drawChar(g2d);
 			player.drawChar(g2d);
+
 			//System.out.println(ranged.size());
 
 			for (Abilities wep : ranged) {
@@ -234,7 +231,12 @@ setStartChars();
 	@Override
 	public void keyPressed(KeyEvent e) {
 	if (e.getKeyCode() == KeyEvent.VK_L) {
-			this.screen = screen.GAMESCREEN;
+			if (this.screen.equals(screen.GAMESCREEN)){
+System.out.println(enemies.peek());
+enemies.poll();
+			}
+
+			
 	}		
 			
 		if (e.getKeyCode() == KeyEvent.VK_RIGHT) {

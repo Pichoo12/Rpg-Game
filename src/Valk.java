@@ -12,7 +12,7 @@ public class Valk extends Enemy{
 		super(x,y,300,300,a, new ImageIcon("src\\Pics\\valk.png"),health,600,"");
 	}
 	public String toString () {
-		return "Aq";
+		return "Sparky";
 	
 	}
 }

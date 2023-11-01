@@ -12,7 +12,7 @@ public class Sparky extends Enemy{
 		super(x,y,300,300,a, new ImageIcon("src\\Pics\\sparky.png"),health,600,"");
 	}
 	public String toString () {
-		return "Aq";
+		return "sparky";
 	
 	}
 }

@@ -84,15 +84,12 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 		
 enemies=setES();
 setStartChars();
-
 	}
-
-
 	private Queue<Enemy> setES() {
 		Queue <Enemy> temp = new LinkedList <> ();
-		temp.add(new Giant (200, new Bow(440,350, 5, 0), 1200,240));
-		temp.add(new Sparky (200, new Bow(440,350, 5, 0), 1200,240));
-		temp.add(new Valk (200, new Bow(440,350, 5, 0), 1200,240));
+		temp.add(new Giant (200, new Energy(440,900, 5, 0), 1200,240));
+		temp.add(new Sparky (200, new ax(440,350, 5, 0), 1200,240));
+		temp.add(new Valk (200, new Rock (440,350, 5, 0), 1200,200));
 		return temp;
 	}
 

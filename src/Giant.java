@@ -9,7 +9,7 @@ public class Giant extends Enemy{
 	}
 	//int xV, int yV, int width, int height, Abilities a, 
 	public Giant (int health, Ranged a, int x, int y) {
-		super(x,y,300,300,a, new ImageIcon("src\\Pics\\giant.png"),health,600,"");
+		super(x,y+200,300,300,a, new ImageIcon("src\\Pics\\giant.png"),health,600,"");
 	}
 	public String toString () {
 		return "Giant";

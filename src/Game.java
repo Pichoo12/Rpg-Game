@@ -15,6 +15,7 @@ import java.util.Queue;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 public class Game extends JPanel implements Runnable, KeyListener, MouseListener,MouseMotionListener{
+	private static final ArrayList<Ranged> rangedList = null;
 	private BufferedImage back;
 	private int key, x, y,w,h;
 	private Character Archerqueen;
@@ -34,10 +35,13 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 	private ImageIcon img , img1, img2;
 	
 	private Queue <Enemy> enemies;
+    private int enemyFireInterval = 100; // Adjust this value as needed
+    private int enemyFireTimer = 0;
+	private boolean up,down,left,right,move,invis;
 	
 
 	ArrayList<Abilities>ranged = new ArrayList<Abilities>();
-	
+	ArrayList<Abilities> projectiles = new ArrayList<Abilities>();
 	ArrayList<Character> startList = new ArrayList<Character>();
 	private ArrayList<Character> setStartChars() {
 		startList.add(new Archerqueen(200, new bfire(400,280, 5, 0), 130,320));
@@ -70,6 +74,11 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 		h=0;
 		bx = 0;
 		by = 0;
+		up = false;
+		left = false;
+		right=false;
+		down = false;
+		move=false;
 		
 		//	screen="start";
 		selectString = "Select Your Character";
@@ -88,12 +97,10 @@ setStartChars();
 	private Queue<Enemy> setES() {
 		Queue <Enemy> temp = new LinkedList <> ();
 		temp.add(new Giant (200, new Energy(440,900, 5, 0), 1200,240));
-		temp.add(new Sparky (200, new ax(440,350, 5, 0), 1200,240));
+		temp.add(new Sparky (200, new ax(1340,350, 5, 0), 1200,240));
 		temp.add(new Valk (200, new Rock (440,350, 5, 0), 1200,200));
 		return temp;
 	}
-
-
 
 	public void run()
 	{
@@ -108,7 +115,15 @@ setStartChars();
 		catch(Exception e)
 		{
 		}
+
+		
 	}
+
+
+
+
+
+
 	public boolean containsSword() {
 		for (Abilities r : ranged) {
 			if (r instanceof Ranged) {
@@ -155,13 +170,31 @@ setStartChars();
 			player.drawChar(g2d);	
 			break;
 		case GAMESCREEN:
-	
+
+
 		g2d.drawImage(img.getImage(), bx, by, getSize().width + 3000, getSize().height + 3000, null);
 	System.out.println(enemies.element());
 		enemies.element().drawChar(g2d);
 			player.drawChar(g2d);
+if (time%50==0) projectiles.add(enemies.peek().getAb());
 
 			//System.out.println(ranged.size());
+			for (Abilities wep : projectiles) {
+				wep.drawWeapon(g2d);
+				wep.move2();
+				
+			}
+
+//collision	
+	player.getAb().isColliding(enemies.peek());
+	for(int i=0; i<ranged.size();i++) {
+		if(ranged.get(i).isColliding(enemies.element()));{
+			enemies.element().setHp(enemies.element().getHp();
+		}
+
+if (enemies.element().getHp()<=0){
+	enemies.poll();
+}
 
 			for (Abilities wep : ranged) {
 				if (wep instanceof Sword) {
@@ -218,6 +251,11 @@ setStartChars();
 			g2d.drawString("archer",1270,600);
 		}
 	}
+
+
+
+
+
 	//DO NOT DELETE
 	@Override
 	public void keyTyped(KeyEvent e) {
@@ -335,7 +373,7 @@ enemies.poll();
 			if (player != null) {
 				if (player.getAb() instanceof Sword){
 					((Sword) player.getAb()).switchSword();
-					
+				
 				}
 			}
 		}

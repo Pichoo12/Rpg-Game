@@ -20,6 +20,14 @@ public Abilities(int dam, int dxV, int dyV, int xV, int yV, int wid, int hei, Im
    }
 
 
+   public boolean isColliding(Enemy enemy) {
+	if (enemy.getX() >= this.getX() && enemy.getX() <= (this.getX() + (this.getW()/2))) {
+		if (enemy.getY() >= this.getY() && enemy.getY() <= (this.getY() + (this.getH()/2))) {https://codeshare.io/register?saveCodeshare=dwmQ4D
+			return true;
+		}
+	}
+	return false;
+}
 
 public Abilities() {
 	// TODO Auto-generated constructor stub
@@ -29,9 +37,13 @@ public Abilities() {
 public void drawWeapon(Graphics g2d) {
 	g2d.drawImage(img.getImage(), x, y, w, h, null);
 	move();
+	move2();
 }
 
-
+public void move2(){
+	x-=dx;
+	y-=dy;
+}
 public void move() {
 	x+=dx;
 	y+=dy;

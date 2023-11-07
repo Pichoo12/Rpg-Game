@@ -51,6 +51,9 @@ public void drawChar(Graphics g2d) {
 	g2d.drawImage(img.getImage(),x,y,w,h, null);}
 
 
+
+
+
 public int getX() {
 	return x;
 }

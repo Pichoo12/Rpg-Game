@@ -97,7 +97,7 @@ setStartChars();
 	private Queue<Enemy> setES() {
 		Queue <Enemy> temp = new LinkedList <> ();
 		temp.add(new Giant (200, new Energy(440,900, 5, 0), 1200,240));
-		temp.add(new Sparky (200, new Energy(1340,350, 5, 0), 1200,240));
+		temp.add(new Sparky (200, new Energy(840,150, 5, 0), 1200,240));
 		temp.add(new Valk (200, new Rock (440,350, 5, 0), 1200,200));
 		return temp;
 	}
@@ -184,17 +184,18 @@ if (time%50==0) projectiles.add(enemies.peek().getAb());
 				wep.move2();
 				
 			}
+ 
+//collision
+  
+	//player.getAb().isColliding(enemies.peek());
+	//for(int i=0; i<ranged.size();i++) {
+	//	if(ranged.get(i).isColliding(enemies.element()));{
+	//		enemies.element().setHp(enemies.element().getHp();
+	//	}
 
-//collision	
-	player.getAb().isColliding(enemies.peek());
-	for(int i=0; i<ranged.size();i++) {
-		if(ranged.get(i).isColliding(enemies.element()));{
-			enemies.element().setHp(enemies.element().getHp();
-		}
-
-if (enemies.element().getHp()<=0){
-	enemies.poll();
-}
+//if (enemies.element().getHp()<=0){
+//	enemies.poll();
+//}
 
 			for (Abilities wep : ranged) {
 				if (wep instanceof Sword) {
@@ -383,6 +384,3 @@ enemies.poll();
 		// TODO Auto-generated method stub
 	}
 }
-
-
-

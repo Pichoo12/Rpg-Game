@@ -7,6 +7,10 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
@@ -48,7 +52,8 @@ buffs = b;
 }
 
 public void drawChar(Graphics g2d) {
-	g2d.drawImage(img.getImage(),x,y,w,h, null);}
+	g2d.drawImage(img.getImage(),x,y,w,h, null);
+}
 
 
 public int getX() {
@@ -111,6 +116,7 @@ public int getDmg() {
 public void setDmg(int dmg) {
 	this.dmg = dmg;
 }
+
 public String getBuffs() {
 	return buffs;
 }

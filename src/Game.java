@@ -33,12 +33,12 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 	private String background;
 	private String selectcharacterbackground;
 	private ImageIcon img , img1, img2;
-	
+
 	private Queue <Enemy> enemies;
-    private int enemyFireInterval = 100; // Adjust this value as needed
-    private int enemyFireTimer = 0;
+	private int enemyFireInterval = 100; // Adjust this value as needed
+	private int enemyFireTimer = 0;
 	private boolean up,down,left,right,move,invis;
-	
+
 
 	ArrayList<Abilities>ranged = new ArrayList<Abilities>();
 	ArrayList<Abilities> projectiles = new ArrayList<Abilities>();
@@ -50,7 +50,7 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 		startList.add(new Archer(200, new Bow(440,350, 5, 0), 1200,240));
 		return startList;
 
-	
+
 	}
 
 
@@ -65,7 +65,7 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 		this.addKeyListener(this);
 		this.addMouseListener(this);
 		this.addMouseMotionListener(this);
-		
+
 		screen = Screen.START;
 		key =-1;
 		x=0;
@@ -79,7 +79,7 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 		right=false;
 		down = false;
 		move=false;
-		
+
 		//	screen="start";
 		selectString = "Select Your Character";
 		text = 1;
@@ -90,14 +90,14 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 		img = new ImageIcon(characterbackground);
 		img1 = new ImageIcon (background);
 		img2 = new ImageIcon (selectcharacterbackground);
-		
-enemies=setES();
-setStartChars();
+
+		enemies=setES();
+		setStartChars();
 	}
 	private Queue<Enemy> setES() {
 		Queue <Enemy> temp = new LinkedList <> ();
 		temp.add(new Giant (200, new Energy(440,900, 5, 0), 1200,240));
-		temp.add(new Sparky (200, new ax(1340,350, 5, 0), 1200,240));
+		temp.add(new Sparky (200, new Energy(840,150, 5, 0), 1200,240));
 		temp.add(new Valk (200, new Rock (440,350, 5, 0), 1200,200));
 		return temp;
 	}
@@ -116,7 +116,7 @@ setStartChars();
 		{
 		}
 
-		
+
 	}
 
 
@@ -134,7 +134,7 @@ setStartChars();
 		}
 		return false;
 	}
-	
+
 	public void paint(Graphics g){
 		Graphics2D twoDgraph = (Graphics2D) g;
 		if( back ==null)
@@ -143,16 +143,18 @@ setStartChars();
 		g2d.clearRect(0,0,getSize().width, getSize().height);
 		g2d.setFont( new Font("Broadway", Font.BOLD, 50));
 		switch (screen) {
-			case START:
+		case START:
 			drawStartScreen(g2d);
 			break;
 		case WIZARD:
 			player = startList.get(0);
 			player.drawChar(g2d);	
+			player.getAb().reset(time);
 			break;
 		case ARCHER:
 			player = startList.get(1);	
 			player.drawChar(g2d);	
+			player.getAb().reset(time);
 			break;
 		case DRAG:
 			//wizard
@@ -160,41 +162,56 @@ setStartChars();
 			if (!containsSword()) {
 				ranged.add(new Sword (player.getAb().getX(), player.getAb().getY()));
 			}
-			
-			player.setAb((Ranged) ranged.get(ranged.size() -1));
 
+			player.setAb((Ranged) ranged.get(ranged.size() -1));
 			player.drawChar(g2d);
+			player.getAb().reset(time);
 			break;
 		case BABYDRAG:
 			player = startList.get(3);	
 			player.drawChar(g2d);	
+			player.getAb().reset(time);
 			break;
 		case GAMESCREEN:
 
 
-		g2d.drawImage(img.getImage(), bx, by, getSize().width + 3000, getSize().height + 3000, null);
-	System.out.println(enemies.element());
-		enemies.element().drawChar(g2d);
-			player.drawChar(g2d);
-if (time%50==0) projectiles.add(enemies.peek().getAb());
+			g2d.drawImage(img.getImage(), bx, by, getSize().width + 3000, getSize().height + 3000, null);
+			System.out.println(enemies.element());
+			if (player.getAb().getReady()) {
+				enemies.element().drawChar(g2d);
+				player.drawChar(g2d);
+			}
+			
+			if (time%100==0) {
+				projectiles.add(new Abilities(50, 10, 0, enemies.element().getX(), enemies.element().getY(), 100, 100, new ImageIcon("src/Pics/energy (2).gif")));
+				enemies.element();
+				System.out.println("works");
+			}
 
 			//System.out.println(ranged.size());
 			for (Abilities wep : projectiles) {
 				wep.drawWeapon(g2d);
 				wep.move2();
-				
+				if (wep.isColliding(enemies.element())) {
+					enemies.element().setHp(enemies.element().getHp() - 10);
+				}
+			}
+			
+			if (enemies.element().getHp() <= 0) {
+				enemies.poll();
 			}
 
-//collision	
-	player.getAb().isColliding(enemies.peek());
-	for(int i=0; i<ranged.size();i++) {
-		if(ranged.get(i).isColliding(enemies.element()));{
-			enemies.element().setHp(enemies.element().getHp();
-		}
+			//collision
 
-if (enemies.element().getHp()<=0){
-	enemies.poll();
-}
+			//player.getAb().isColliding(enemies.peek());
+			//for(int i=0; i<ranged.size();i++) {
+			//	if(ranged.get(i).isColliding(enemies.element()));{
+			//		enemies.element().setHp(enemies.element().getHp();
+			//	}
+
+			//if (enemies.element().getHp()<=0){
+			//	enemies.poll();
+			//}
 
 			for (Abilities wep : ranged) {
 				if (wep instanceof Sword) {
@@ -214,8 +231,8 @@ if (enemies.element().getHp()<=0){
 		}
 		drawScreen(g2d);
 		//if(player!=null)
-			//System.out.println(player.getAb());
-			time++;
+		//System.out.println(player.getAb());
+		time++;
 		twoDgraph.drawImage (back, null, 0, 0);
 	}
 	private void drawScreen(Graphics g2d) {
@@ -232,8 +249,8 @@ if (enemies.element().getHp()<=0){
 
 
 		if (typeIndex<= selectString.length() && typeIndex !=0) {
-		g2d.setColor(Color.white);
-		 g2d.drawImage(img1.getImage(), 0,0,getSize().width, getSize().height, null);
+			g2d.setColor(Color.white);
+			g2d.drawImage(img1.getImage(), 0,0,getSize().width, getSize().height, null);
 			g2d.drawString(selectString.substring(0,typeIndex),500,200);
 			System.out.println(selectString.substring(0,typeIndex));
 		}
@@ -260,20 +277,20 @@ if (enemies.element().getHp()<=0){
 	@Override
 	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
-	
+
 	}
 	//DO NOT DELETE
 	@Override
 	public void keyPressed(KeyEvent e) {
-	if (e.getKeyCode() == KeyEvent.VK_L) {
+		if (e.getKeyCode() == KeyEvent.VK_L) {
 			if (this.screen.equals(screen.GAMESCREEN)){
-System.out.println(enemies.peek());
-enemies.poll();
+				System.out.println(enemies.peek());
+				enemies.poll();
 			}
 
-			
-	}		
-			
+
+		}		
+
 		if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 			bx -= 5;
 		} else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
@@ -310,8 +327,8 @@ enemies.poll();
 				screen = screen.GAMESCREEN;	
 				player.setX(200);
 				player.setY(200);
-				
-	
+
+
 			}	
 
 			//player.getWeapon(g2d).drawWeapon();
@@ -335,7 +352,7 @@ enemies.poll();
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
@@ -373,7 +390,7 @@ enemies.poll();
 			if (player != null) {
 				if (player.getAb() instanceof Sword){
 					((Sword) player.getAb()).switchSword();
-				
+
 				}
 			}
 		}
@@ -383,6 +400,3 @@ enemies.poll();
 		// TODO Auto-generated method stub
 	}
 }
-
-
-

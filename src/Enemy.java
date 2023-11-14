@@ -1,3 +1,5 @@
+
+
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -12,7 +14,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 
-public class Enemy {
+public class Enemy extends Character {
 private int x,w,y,h;
 private int dx,dy;
 private Ranged ab;

@@ -1,3 +1,4 @@
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -96,8 +97,8 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 	}
 	private Queue<Enemy> setES() {
 		Queue <Enemy> temp = new LinkedList <> ();
-		temp.add(new Giant (200, new Energy(440,900, 5, 0), 1200,240));
-		temp.add(new Sparky (200, new Energy(840,150, 5, 0), 1200,240));
+		temp.add(new Giant (200, new Energy(440,350, 5, 0), 1200,240));
+		temp.add(new Sparky (200, new Energy(440,350, 5, 0), 1200,240));
 		temp.add(new Valk (200, new Rock (440,350, 5, 0), 1200,200));
 		return temp;
 	}
@@ -118,11 +119,6 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 
 
 	}
-
-
-
-
-
 
 	public boolean containsSword() {
 		for (Abilities r : ranged) {
@@ -174,28 +170,49 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 			break;
 		case GAMESCREEN:
 
-
 			g2d.drawImage(img.getImage(), bx, by, getSize().width + 3000, getSize().height + 3000, null);
-			System.out.println(enemies.element());
+		//	System.out.println(enemies.element());
+          Enemy enemy = enemies.element();
 			if (player.getAb().getReady()) {
 				enemies.element().drawChar(g2d);
+				g2d.drawRect(player.getX(),player.getY(),player.getX()+player.getW(),player.getY()+player.getH());
+				g2d.drawRect(enemy.getX(),enemy.getY(),enemy.getX()+enemy.getW(),enemy.getY()+enemy.getH());
 				player.drawChar(g2d);
+				
 			}
+
 			
 			if (time%100==0) {
+
+				if (enemies.element() instanceof Sparky) 
 				projectiles.add(new Abilities(50, 10, 0, enemies.element().getX(), enemies.element().getY(), 100, 100, new ImageIcon("src/Pics/energy (2).gif")));
-				enemies.element();
-				System.out.println("works");
+				//enemies.element();
+				if  (enemies.element() instanceof Valk) 
+				projectiles.add(new Abilities(50, 10, 0, enemies.element().getX(), enemies.element().getY(), 100, 100, new ImageIcon("src\\ax.png")));
+				if (enemies.element() instanceof Giant) 
+				projectiles.add(new Abilities(50, 10, 0, enemies.element().getX(), enemies.element().getY(), 100, 100, new ImageIcon("src\\rock.png")));
+				if (enemies.element() instanceof Sparky) 
+				projectiles.add(new Abilities(50, 10, 0, enemies.element().getX(), enemies.element().getY(), 100, 100, new ImageIcon("src/Pics/energy (2).gif")));
+				
+				
+			//	System.out.println("works");
 			}
 
 			//System.out.println(ranged.size());
+			ArrayList<Abilities> toBeRemoved = new ArrayList<Abilities>();
 			for (Abilities wep : projectiles) {
 				wep.drawWeapon(g2d);
 				wep.move2();
-				if (wep.isColliding(enemies.element())) {
-					enemies.element().setHp(enemies.element().getHp() - 10);
+
+				if (wep.isColliding(player)) {
+					enemies.element().setHp(player.getHp() - 10);
+				    
+					toBeRemoved.add(wep);
+					
 				}
+
 			}
+			projectiles.removeAll(toBeRemoved);
 			
 			if (enemies.element().getHp() <= 0) {
 				enemies.poll();
@@ -212,7 +229,9 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 			//if (enemies.element().getHp()<=0){
 			//	enemies.poll();
 			//}
-
+			
+			ArrayList<Abilities> toBeRemoved2 = new ArrayList<Abilities>();
+			
 			for (Abilities wep : ranged) {
 				if (wep instanceof Sword) {
 					wep.setX(player.getX());
@@ -225,8 +244,24 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 					wep.move();
 
 				}
-				System.out.println(wep.getX());			
+				if (wep.isColliding(enemies.element())) {
+					enemies.element().setHp(enemies.element().getHp() - 10);
+					toBeRemoved2.add(wep);
+				}
+				if (wep.isColliding(player)) {
+					enemies.element().setHp(player.getHp() - 10);
+				    
+					toBeRemoved.add(wep);
+					
+				}
+				
+				System.out.println((wep.isColliding(player)));
+				//System.out.println (wep.isColliding(enemies.element())) ;
+			//	System.out.println(wep.getX());			
 			}
+			
+			ranged.removeAll(toBeRemoved2);
+			
 			break;
 		}
 		drawScreen(g2d);
@@ -244,7 +279,7 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 		typeTime = typeTime / typeSpeed;
 		int typeIndex = time/typeTime - ((time%typeTime)/typeTime);
 		g2d.setColor(Color.black);
-		System.out.println(typeIndex + " " + selectString.length());
+		//System.out.println(typeIndex + " " + selectString.length());
 
 
 
@@ -284,7 +319,7 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 	public void keyPressed(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_L) {
 			if (this.screen.equals(screen.GAMESCREEN)){
-				System.out.println(enemies.peek());
+				//System.out.println(enemies.peek());
 				enemies.poll();
 			}
 
@@ -293,13 +328,29 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 
 		if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 			bx -= 5;
+			
 		} else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
 			bx += 5;
 		} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
 			by -= 5;
+			
 		} else if (e.getKeyCode() == KeyEvent.VK_UP) {
 			by += 5;
+			
+		} else if (e.getKeyCode() == KeyEvent.VK_W) {
+			player.setY(player.getY()-20);
 		}
+		else if (e.getKeyCode() == KeyEvent.VK_A) {
+			player.setX(player.getX()-20);
+		}
+		else if (e.getKeyCode() == KeyEvent.VK_S) {
+			player.setY(player.getY()+20);
+		}
+		else if (e.getKeyCode() == KeyEvent.VK_D) {
+				player.setX(player.getX()+20);
+		}
+		
+	
 
 		switch (e.getKeyCode()){
 		case 49:

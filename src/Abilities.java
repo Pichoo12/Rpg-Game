@@ -27,7 +27,7 @@ public Abilities(int dam, int dxV, int dyV, int xV, int yV, int wid, int hei, Im
    }
 
 
-   public boolean isColliding(Enemy enemy) {
+   public boolean isColliding(Character enemy) {
 	if (enemy.getX() >= this.getX() && enemy.getX() <= (this.getX() + (this.getW()/2))) {
 		if (enemy.getY() >= this.getY() && enemy.getY() <= (this.getY() + (this.getH()/2))) {https://codeshare.io/register?saveCodeshare=dwmQ4D
 			return true;

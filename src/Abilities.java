@@ -1,4 +1,5 @@
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -28,12 +29,20 @@ public Abilities(int dam, int dxV, int dyV, int xV, int yV, int wid, int hei, Im
 
 
    public boolean isColliding(Character enemy) {
-	if (enemy.getX() >= this.getX() && enemy.getX() <= (this.getX() + (this.getW()/2))) {
+	/*if (enemy.getX() >= this.getX() && enemy.getX() <= (this.getX() + (this.getW()/2))) {
 		if (enemy.getY() >= this.getY() && enemy.getY() <= (this.getY() + (this.getH()/2))) {https://codeshare.io/register?saveCodeshare=dwmQ4D
 			return true;
 		}
 	}
+	return false;*/
+
+	Rectangle e = new Rectangle (enemy.getX(), enemy.getY(), enemy.getW(), enemy.getH());
+	Rectangle w = new Rectangle(getX(), getY(), getW(), getH());
+	if(w.intersects(e)){
+		return true;
+	}
 	return false;
+
 }
 
 public Abilities() {

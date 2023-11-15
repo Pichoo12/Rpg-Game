@@ -181,7 +181,10 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 				
 			}
 
-			
+			System.out.println(player.getHp());
+				if(player.getHp()<=0){
+					screen = screen.START;
+				}
 			if (time%100==0) {
 
 				if (enemies.element() instanceof Sparky) 
@@ -205,7 +208,7 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 				wep.move2();
 
 				if (wep.isColliding(player)) {
-					enemies.element().setHp(player.getHp() - 10);
+					player.setHp(player.getHp()-10);
 				    
 					toBeRemoved.add(wep);
 					
@@ -254,6 +257,7 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 					toBeRemoved.add(wep);
 					
 				}
+				
 				
 				System.out.println((wep.isColliding(player)));
 				//System.out.println (wep.isColliding(enemies.element())) ;

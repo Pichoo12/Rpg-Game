@@ -98,8 +98,8 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 	private Queue<Enemy> setES() {
 		Queue <Enemy> temp = new LinkedList <> ();
 		temp.add(new Giant (200, new Energy(440,350, 5, 0), 1200,240));
-		temp.add(new Sparky (200, new Energy(440,350, 5, 0), 1200,240));
-		temp.add(new Valk (200, new Rock (440,350, 5, 0), 1200,200));
+		temp.add(new Sparky (500, new Energy(440,350, 5, 0), 1200,240));
+		temp.add(new Valk (500, new Rock (440,350, 5, 0), 1200,200));
 		return temp;
 	}
 
@@ -137,6 +137,8 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 			back=(BufferedImage)( (createImage(getWidth(), getHeight())));
 		Graphics g2d = back.createGraphics();
 		g2d.clearRect(0,0,getSize().width, getSize().height);
+
+		
 		g2d.setFont( new Font("Broadway", Font.BOLD, 50));
 		switch (screen) {
 		case START:
@@ -158,7 +160,6 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 			if (!containsSword()) {
 				ranged.add(new Sword (player.getAb().getX(), player.getAb().getY()));
 			}
-
 			player.setAb((Ranged) ranged.get(ranged.size() -1));
 			player.drawChar(g2d);
 			player.getAb().reset(time);
@@ -169,7 +170,7 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 			player.getAb().reset(time);
 			break;
 		case GAMESCREEN:
-
+player.getAb().setY(player.getY());
 			g2d.drawImage(img.getImage(), bx, by, getSize().width + 3000, getSize().height + 3000, null);
 		//	System.out.println(enemies.element());
           Enemy enemy = enemies.element();
@@ -208,7 +209,7 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 				wep.move2();
 
 				if (wep.isColliding(player)) {
-					player.setHp(player.getHp()-10);
+					player.setHp(player.getHp()-20);
 				    
 					toBeRemoved.add(wep);
 					

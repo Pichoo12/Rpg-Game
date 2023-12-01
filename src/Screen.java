@@ -4,7 +4,9 @@ public enum Screen {
 	ARCHER(2),
 	DRAG(3),
 	BABYDRAG(4),
-	GAMESCREEN(5);
+	GAMESCREEN(7),
+	WINSCREEN(5),
+	LOSESCREEN(6);
 	
 	public final int index;
     public Object get;

@@ -137,7 +137,10 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 			back=(BufferedImage)( (createImage(getWidth(), getHeight())));
 		Graphics g2d = back.createGraphics();
 		g2d.clearRect(0,0,getSize().width, getSize().height);
-
+			
+		if(enemies.isEmpty()){
+					screen = screen.WINSCREEN;
+				}
 		
 		g2d.setFont( new Font("Broadway", Font.BOLD, 50));
 		switch (screen) {
@@ -169,6 +172,12 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 			player.drawChar(g2d);	
 			player.getAb().reset(time);
 			break;
+			case WINSCREEN:
+		 g2d.drawString("Win", 500, 500);
+			break;
+			case LOSESCREEN:
+		 g2d.drawString("Lose", 500, 500);
+			break;
 		case GAMESCREEN:
 player.getAb().setY(player.getY());
 			g2d.drawImage(img.getImage(), bx, by, getSize().width + 3000, getSize().height + 3000, null);
@@ -182,10 +191,20 @@ player.getAb().setY(player.getY());
 				
 			}
 
+			
+//LOSESCREEN
 			System.out.println(player.getHp());
 				if(player.getHp()<=0){
-					screen = screen.START;
+					screen = screen.LOSESCREEN;
 				}
+//WINSCREEN
+	
+			
+
+
+
+
+			
 			if (time%100==0) {
 
 				if (enemies.element() instanceof Sparky) 
@@ -249,7 +268,7 @@ player.getAb().setY(player.getY());
 
 				}
 				if (wep.isColliding(enemies.element())) {
-					enemies.element().setHp(enemies.element().getHp() - 10);
+					enemies.element().setHp(enemies.element().getHp() - 100);
 					toBeRemoved2.add(wep);
 				}
 				if (wep.isColliding(player)) {
@@ -267,6 +286,8 @@ player.getAb().setY(player.getY());
 			
 			ranged.removeAll(toBeRemoved2);
 			
+			
+				
 			break;
 		}
 		drawScreen(g2d);

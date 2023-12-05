@@ -53,7 +53,19 @@ public void drawChar(Graphics g2d) {
 	g2d.drawImage(img.getImage(),x,y,w,h, null);}
 
 
+	public void updatePosition() {
+        // Add logic to move the enemy up and down randomly
+        int direction = (int) (Math.random() * 2); // 0 or 1
+        int speed = 50; // Adjust the speed as needed
 
+        if (direction == 0) {
+            // Move up
+            setY(getY() - speed);
+        } else {
+            // Move down
+            setY(getY() + speed);
+        }
+    }
 
 
 public int getX() {

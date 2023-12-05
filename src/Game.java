@@ -253,17 +253,18 @@ player.getAb().setY(player.getY());
 
 
 
-
 			
 			if (time%100==0) {
+				enemy.updatePosition();
 
 				if (enemies.element() instanceof Sparky) 
-				projectiles.add(new Abilities(50, 10, 0, enemies.element().getX(), enemies.element().getY(), 100, 100, new ImageIcon("src/Pics/energy (2).gif")));
+				projectiles.add(new Abilities(50, 100, 0, enemies.element().getX(), enemies.element().getY(), 100, 100, new ImageIcon("src/Pics/energy (2).gif")));
 				//enemies.element();
 				if  (enemies.element() instanceof Valk) 
 				projectiles.add(new Abilities(50, 10, 0, enemies.element().getX(), enemies.element().getY(), 100, 100, new ImageIcon("src\\ax.png")));
+	
 				if (enemies.element() instanceof Giant) 
-				projectiles.add(new Abilities(50, 10, 0, enemies.element().getX(), enemies.element().getY(), 100, 100, new ImageIcon("src\\rock.png")));
+				projectiles.add(new Abilities(50, 10, 0, enemies.element().getX(), enemies.element().getY(), 200, 200, new ImageIcon("src\\rock.png")));
 				if (enemies.element() instanceof Sparky) 
 				projectiles.add(new Abilities(50, 10, 0, enemies.element().getX(), enemies.element().getY(), 100, 100, new ImageIcon("src/Pics/energy (2).gif")));
 				if  (enemies.element() instanceof Frog)

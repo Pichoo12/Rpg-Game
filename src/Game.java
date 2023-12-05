@@ -9,9 +9,14 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Scanner;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
@@ -34,6 +39,7 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 	private String background;
 	private String selectcharacterbackground;
 	private ImageIcon img , img1, img2;
+	private File file;
 
 	private Queue <Enemy> enemies;
 	private int enemyFireInterval = 100; // Adjust this value as needed
@@ -91,6 +97,7 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 		img = new ImageIcon(characterbackground);
 		img1 = new ImageIcon (background);
 		img2 = new ImageIcon (selectcharacterbackground);
+		file = new File("backup.txt");
 
 		enemies=setES();
 		setStartChars();
@@ -100,6 +107,7 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 		temp.add(new Giant (200, new Energy(440,350, 5, 0), 1200,240));
 		temp.add(new Sparky (500, new Energy(440,350, 5, 0), 1200,240));
 		temp.add(new Valk (500, new Rock (440,350, 5, 0), 1200,200));
+		temp.add(new Frog (400, new Rock(400,300,5,0),1200,200));
 		return temp;
 	}
 
@@ -130,6 +138,48 @@ public class Game extends JPanel implements Runnable, KeyListener, MouseListener
 		}
 		return false;
 	}
+
+		public void createFile() {
+	try {
+		if (file.createNewFile()) {
+			System.out.println("File created" +file.getName());
+		}
+		else {
+			System.out.println("File already exists");
+		}
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	}
+	//scanner
+	public void writeToFile() {
+		try {
+			FileWriter myWriter = new FileWriter(file);
+			myWriter.write("You have" + enemies.size()+ "enemies left");
+			myWriter.close();
+			System.out.println("Successfullly wrote to file");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	public void readFile() {
+		try {
+			Scanner sc= new Scanner(file);
+			while(sc.hasNext()) {
+				System.out.println(sc.next());
+			}
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+}
+
+
+
+
 
 	public void paint(Graphics g){
 		Graphics2D twoDgraph = (Graphics2D) g;
@@ -216,7 +266,8 @@ player.getAb().setY(player.getY());
 				projectiles.add(new Abilities(50, 10, 0, enemies.element().getX(), enemies.element().getY(), 100, 100, new ImageIcon("src\\rock.png")));
 				if (enemies.element() instanceof Sparky) 
 				projectiles.add(new Abilities(50, 10, 0, enemies.element().getX(), enemies.element().getY(), 100, 100, new ImageIcon("src/Pics/energy (2).gif")));
-				
+				if  (enemies.element() instanceof Frog)
+               projectiles.add(new Abilities(50, 10, 0, enemies.element().getX(), enemies.element().getY(), 100, 100, new ImageIcon("src\\ax.png")));
 				
 			//	System.out.println("works");
 			}
